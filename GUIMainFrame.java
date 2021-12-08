@@ -4,6 +4,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+/**
+ * Main GUI application starts here. This class is the base of GUI
+ * On closing of this frame system will close.
+ * Before closing this class will automatically save all the members into csv file
+ */
 public class GUIMainFrame extends JFrame {
 
     Container contentPane;
@@ -12,6 +17,7 @@ public class GUIMainFrame extends JFrame {
     JScrollPane scrollPane;
 
     public GUIMainFrame() {
+        // set up look and feel
         setTitle("Sheffield Sports Club");
         Toolkit tk = Toolkit.getDefaultToolkit();
         Dimension dim = tk.getScreenSize();
@@ -24,7 +30,7 @@ public class GUIMainFrame extends JFrame {
         memberListPanel = new JPanel();
         memberListPanel.setLayout(new BoxLayout(memberListPanel, BoxLayout.Y_AXIS));
         for (Member member : ClubMembership.memberTreeSet) {
-            GUISingleMemberPanel guiSingleMember = generatedSingleMembersPanel(member);
+            GUISingleMemberPanel guiSingleMember = new GUISingleMemberPanel(member);
             memberListPanel.add(guiSingleMember);
         }
         scrollPane = new JScrollPane(memberListPanel);
@@ -46,18 +52,27 @@ public class GUIMainFrame extends JFrame {
         });
     }
 
+    /**
+     * Updates members list shown in the center pane
+     * with all the members present in database tree set
+     */
     public void updatePane() {
         ArrayList<Member> memberList = ClubMembership.getMembersList();
         updatePane(memberList);
     }
 
+    /**
+     * Updates members list shown in the center pane with passed list of members
+     * Used to show only filtered list of members
+     * related to search functionality
+     */
     public void updatePane(ArrayList<Member> memberList) {
         contentPane.removeAll();
         mainContentPanel = new JPanel();
         memberListPanel = new JPanel();
         memberListPanel.setLayout(new BoxLayout(memberListPanel, BoxLayout.Y_AXIS));
         for (Member member : memberList) {
-            GUISingleMemberPanel guiSingleMember = generatedSingleMembersPanel(member);
+            GUISingleMemberPanel guiSingleMember = new GUISingleMemberPanel(member);
             memberListPanel.add(guiSingleMember);
         }
         scrollPane = new JScrollPane(memberListPanel);
@@ -67,9 +82,4 @@ public class GUIMainFrame extends JFrame {
         contentPane.add(new GUISideMenuPanel(), BorderLayout.WEST);
         setVisible(true);
     }
-
-    private static GUISingleMemberPanel generatedSingleMembersPanel(Member member) {
-        return new GUISingleMemberPanel(member);
-    }
-
 }

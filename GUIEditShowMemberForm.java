@@ -7,7 +7,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class GUIShowOrEditMember extends JFrame implements ActionListener {
+public class GUIEditShowMemberForm extends JFrame implements ActionListener {
     // Instance field to save member
     Member member;
 
@@ -28,7 +28,7 @@ public class GUIShowOrEditMember extends JFrame implements ActionListener {
 
     Container contentPane;
 
-    public GUIShowOrEditMember(Member member) {
+    public GUIEditShowMemberForm(Member member) {
         this.member = member;
         setBounds(580, 220, 850, 550);
         setTitle("Edit Member");
@@ -198,12 +198,11 @@ public class GUIShowOrEditMember extends JFrame implements ActionListener {
 
         // delete existing entry from the main collection
         ClubMembership.memberTreeSet.remove(member);
-        if (rdoIndividual.isSelected()) {
-            member = new IndividualMember();
-        } else {
-            member = new FamilyMember();
-        }
 
+        // create new member to be added
+        // this step can be avoided but in case of membership type change anyway new member of that type
+        // needs to be created. So for simplicity new member is removed and added for simplicity of code.
+        member = rdoIndividual.isSelected() ? new IndividualMember() : new FamilyMember();
 
         member.setLastName(lastName);
         member.setFirstName(firstName);
@@ -216,6 +215,7 @@ public class GUIShowOrEditMember extends JFrame implements ActionListener {
         member.setMembershipStartDate(membershipStartDate);
         member.setMembershipEndDateByStartDate(membershipStartDate); // set end date based on start date
 
+        // set details of family member
         if (member instanceof FamilyMember) {
             ((FamilyMember) member).setSpouseName(spouseName);
             if (!numberOfChildren.isEmpty()) {
@@ -228,7 +228,9 @@ public class GUIShowOrEditMember extends JFrame implements ActionListener {
             }
 
         }
+        // add member to database tree set
         ClubMembership.memberTreeSet.add(member);
+
         setVisible(false);
         ClubMembership.guiMainFrame.updatePane(); // update live list of members
         JOptionPane.showMessageDialog(null, "Member details updated successfully.");

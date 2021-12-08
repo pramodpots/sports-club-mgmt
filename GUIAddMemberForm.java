@@ -7,6 +7,10 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Generates UI to get entries from user about member.
+ * Saves those entries as new member into TreeSet (used as DB)
+ */
 public class GUIAddMemberForm extends JFrame implements ActionListener {
     // Instance field to save member
     Member member;
@@ -25,12 +29,11 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
     JButton btnAddMember;
 
     JLabel lblInstruction, lblErrorMsg;
-    JFrame frame;
 
     Container contentPane;
 
     public GUIAddMemberForm() {
-
+        // setting up design and layout
         setBounds(580, 220, 850, 550);
         setTitle("Add Member");
         Toolkit tk = Toolkit.getDefaultToolkit();
@@ -41,6 +44,7 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         contentPane = this.getContentPane();
 
         // create member basic details pane and its fields
+
         JPanel basicDetailsPanel = new JPanel(new GridLayout(0, 2));
         basicDetailsPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
@@ -139,12 +143,14 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         basicDetailsPanel.add(lblNumOfChildren);
         basicDetailsPanel.add(tfNumberOfChildren);
 
-        btnAddMember = new JButton("Add");
+        btnAddMember = new JButton("Add Member");
         btnAddMember.addActionListener(this::actionPerformed);
 
         lblInstruction = new JLabel("Fields indicated with (*) are required fields.");
-        lblErrorMsg = new JLabel("");
 
+        lblErrorMsg = new JLabel("");  // will be used to show error message and what is wrong in form
+
+        // create panel to show at bottom of the form.
         JPanel southPanel = new JPanel(new GridLayout(0, 1));
         southPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         southPanel.add(lblInstruction);
@@ -169,12 +175,11 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         String healthConditionInfo = tfHealthInfo.getText().trim();
         String allergyInfo = tfAllergyInfo.getText().trim();
         String membershipStartDate = tfMembershipStart.getText().trim();
-        String membershipEndDate = tfMembershipEnd.getText().trim();
 
         String spouseName = tfSpouseName.getText().trim();
         String numberOfChildren = tfNumberOfChildren.getText().trim();
 
-        // check for required fields
+        // check for required fields not empty
         if (lastName.isEmpty() || firstName.isEmpty() || dateOfBirth.isEmpty() || membershipStartDate.isEmpty()) {
             lblErrorMsg.setText("Please enter all the required fields");
             return;
@@ -182,8 +187,8 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
 
         // check for valid dates
         try {
-            LocalDate dob = LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("d/M/yyyy"));
-            LocalDate startDate = LocalDate.parse(membershipStartDate, DateTimeFormatter.ofPattern("d/M/yyyy"));
+            LocalDate.parse(dateOfBirth, DateTimeFormatter.ofPattern("d/M/yyyy"));
+            LocalDate.parse(membershipStartDate, DateTimeFormatter.ofPattern("d/M/yyyy"));
         } catch (DateTimeException err) {
             // dates are invalid ask user to edit dates
             lblErrorMsg.setText("Please enter date in valid format e.g- 31/12/1999");
@@ -192,19 +197,17 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
 
         // check if valid age for particular type of member
         if (rdoIndividual.isSelected() && DateUtil.getCalculateAge(dateOfBirth) < 12) {
+            // individual member is not of age greater than equal to 12
             JOptionPane.showMessageDialog(null, "You should be at least of age 12 for Individual membership type.");
-            return; // individual member is not of age greater than equal to 12
+            return;
         } else if ((!rdoIndividual.isSelected()) && DateUtil.getCalculateAge(dateOfBirth) < 18) {
+            // family member is not of age greater than equal to 18
             JOptionPane.showMessageDialog(null, "You should be at least of age 18 for Family membership type.");
             return;
         }
 
-        // if everything is good, create new member and set its values and close window
-        if (rdoIndividual.isSelected()) {
-            member = new IndividualMember();
-        } else {
-            member = new FamilyMember();
-        }
+        // if everything is good, create new member and set its values
+        member = rdoIndividual.isSelected() ? new IndividualMember() : new FamilyMember();
 
         member.setLastName(lastName);
         member.setFirstName(firstName);
@@ -217,6 +220,7 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         member.setMembershipStartDate(membershipStartDate);
         member.setMembershipEndDateByStartDate(membershipStartDate); // set end date based on start date
 
+        // set details of family member
         if (member instanceof FamilyMember) {
             ((FamilyMember) member).setSpouseName(spouseName);
             if (!numberOfChildren.isEmpty()) {
@@ -229,7 +233,9 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
             }
 
         }
+        // add member to database tree set
         ClubMembership.memberTreeSet.add(member);
+
         setVisible(false);
         ClubMembership.guiMainFrame.updatePane(); // update live list of members
         JOptionPane.showMessageDialog(null, "Member added successfully.");

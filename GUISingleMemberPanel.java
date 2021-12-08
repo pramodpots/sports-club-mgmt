@@ -3,6 +3,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * This class is representation of single member in gui
+ * Shows id, name, date of birth and two buttons 'show/edit', 'delete' in single horizontal line
+ * 1. show/edit - opens window to see and if required update member details
+ * 2. delete - deletes that member form the system
+ */
 public class GUISingleMemberPanel extends JPanel {
 
     public GUISingleMemberPanel(Member member) {
@@ -36,12 +42,12 @@ public class GUISingleMemberPanel extends JPanel {
         add(editButton);
         add(deleteButton);
 
-        // delete action listener
+        // edit button action listener
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    new GUIShowOrEditMember(member);
+                    new GUIEditShowMemberForm(member);
                 } catch (Exception err) {
                     System.out.println(err);
                 }
@@ -62,6 +68,7 @@ public class GUISingleMemberPanel extends JPanel {
         });
     }
 
+    // creates empty component used for spacing items properly
     private Component getEmptyComponent() {
         Component emptyComponent = Box.createRigidArea(new Dimension(5, 0));
         return emptyComponent;

@@ -6,6 +6,17 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Generates panel containing all the menu function of the system.
+ * Menus:
+ * 1. Show all members - Refreshes list of all members in main panel
+ * 2. Add member - Opens form for adding member
+ * 3. Import members - Loads external members from csv into system
+ * 4. Export members - Exports all existing members to specific csv file
+ * 5. Log visitor - Logs visitor into system and shows popup message with count of visitors
+ *
+ * Additionally, shows Today's date and today's number of visitors in side panel
+ */
 public class GUISideMenuPanel extends JPanel implements ActionListener {
     private static int visitorCount = 0;
     private JButton addMemberButton;
@@ -19,12 +30,13 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
     private JTextField searchValue;
 
     public GUISideMenuPanel() {
+        // setup look and feel
         setLayout(new BoxLayout(this, 1));
         setBackground(Color.gray);
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel lblMenu = new JLabel("Menu");
-        lblMenu.setFont(new Font("Yu Mincho", Font.PLAIN, 20));
+        lblMenu.setFont(new Font("Yu Mincho", Font.PLAIN, 20)); // use large font
         add(lblMenu);
         add(new JLabel("==============="));
 
@@ -70,6 +82,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
 
     }
 
+    // creates panel with today's date and visitor count
     private void createVisitorDetailsArea() {
         // Create Visitor count till today's date
         visitorsTillDate = new JLabel("Date:" + DateUtil.convertDateToString(LocalDate.now()));
@@ -83,7 +96,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
         if (source == showAllMembers) {
-            ClubMembership.guiMainFrame.updatePane();
+            ClubMembership.guiMainFrame.updatePane(); // updates members with all members
         } else if (source == addMemberButton) {
             try {
                 new GUIAddMemberForm();
@@ -103,9 +116,9 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
         } else if (source == logVisitorButton) {
             visitorCount++;
             JOptionPane.showMessageDialog(null, "Visitor logged successfully\n Total visitors: " + visitorCount);
-            visitorsTillDate.setText("Date:" + DateUtil.convertDateToString(LocalDate.now())); // this will change date if
-                                                                                           // date is changed while
-                                                                                           // logging the visitor
+
+            // this will change date if date is changed while logging the visitor
+            visitorsTillDate.setText("Date:" + DateUtil.convertDateToString(LocalDate.now()));
             numberOfVisitors.setText("Visitors:" + String.valueOf(visitorCount));
         } else if (source == searchButton) {
             String searchTerm = searchValue.getText().trim().toLowerCase();
@@ -123,14 +136,13 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
                 String dob = member.getDateOfBirth().toLowerCase();
 
                 String combinedString = id + firstName + lastName + dob;
-                if (combinedString.contains(searchTerm)) { // if search term has anything is common with above
-                                                           // attributes
+                if (combinedString.contains(searchTerm)) {
+                    // if search term has anything is common with above attributes add to list
                     filteredMemberList.add(member);
                 }
             }
-            if (!filteredMemberList.isEmpty()) {
-                ClubMembership.guiMainFrame.updatePane(filteredMemberList);
-            }
+            // update main frame with search results.
+            ClubMembership.guiMainFrame.updatePane(filteredMemberList);
         }
     }
 }
