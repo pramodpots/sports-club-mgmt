@@ -32,7 +32,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
     public GUISideMenuPanel() {
         // setup look and feel
         setLayout(new BoxLayout(this, 1));
-        setBackground(Color.gray);
+        setBackground(Color.lightGray);
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel lblMenu = new JLabel("Menu");
