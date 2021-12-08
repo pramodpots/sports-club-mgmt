@@ -1,4 +1,7 @@
-
+/**
+ * Child class of Member class
+ * Supports additional details related to individual member type
+ */
 public class IndividualMember extends Member{
     // constants
     private static final double INDIVIDUAL_MEMBER_FEE = 36.0;
@@ -8,8 +11,14 @@ public class IndividualMember extends Member{
     private double membershipFee;
     private String membershipType;
 
+    /**
+     * class constructor getting comma seperated string which holds all the fields in single string
+     * this should be used when loading the existing customers form csv files
+     * @param memberCSVString
+     */
     public IndividualMember(String memberCSVString) {
-        // adding extra 20 commas to make code simple and consistent without multiple if else cases
+        // adding extra 20 commas to make code simple and consistent
+        // without multiple if else cases
         super(memberCSVString);
         memberCSVString += ",,,,,,,,,,,,,,,,,,,,";
         String[] attributes = memberCSVString.split("\\,", 40);
@@ -46,6 +55,8 @@ public class IndividualMember extends Member{
                 '}';
     }
 
+    // This is simple modification of toString method
+    // Used to save string into csv file
     @Override
     public String toCSVString() {
         return super.toCSVString()+',' +

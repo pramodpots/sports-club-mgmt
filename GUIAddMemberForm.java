@@ -95,7 +95,7 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         basicDetailsPanel.add(tfAllergyInfo);
 
         lblMembershipStart = new JLabel("Membership Start Date*:");
-        tfMembershipStart = new JTextField(Util.convertDateToString(LocalDate.now()));
+        tfMembershipStart = new JTextField(DateUtil.convertDateToString(LocalDate.now()));
         basicDetailsPanel.add(lblMembershipStart);
         basicDetailsPanel.add(tfMembershipStart);
 
@@ -191,10 +191,10 @@ public class GUIAddMemberForm extends JFrame implements ActionListener {
         }
 
         // check if valid age for particular type of member
-        if (rdoIndividual.isSelected() && Util.getCalculateAge(dateOfBirth) < 12) {
+        if (rdoIndividual.isSelected() && DateUtil.getCalculateAge(dateOfBirth) < 12) {
             JOptionPane.showMessageDialog(null, "You should be at least of age 12 for Individual membership type.");
             return; // individual member is not of age greater than equal to 12
-        } else if ((!rdoIndividual.isSelected()) && Util.getCalculateAge(dateOfBirth) < 18) {
+        } else if ((!rdoIndividual.isSelected()) && DateUtil.getCalculateAge(dateOfBirth) < 18) {
             JOptionPane.showMessageDialog(null, "You should be at least of age 18 for Family membership type.");
             return;
         }

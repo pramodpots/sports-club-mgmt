@@ -17,7 +17,7 @@ public class MemberComparator implements Comparator<Member> {
                 String m2DOB = m2.getDateOfBirth();
 
                 if (!m1DOB.isEmpty() && !m2DOB.isEmpty()) { // if actual dob is present only then compare dates
-                    return Util.convertStringToDate(m1DOB).compareTo(Util.convertStringToDate(m2DOB));
+                    return DateUtil.convertStringToDate(m1DOB).compareTo(DateUtil.convertStringToDate(m2DOB));
                 }
                 // Covert to date will not work if empty date so in that case compare normal
                 // string without conversion

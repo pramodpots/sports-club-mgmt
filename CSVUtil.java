@@ -1,18 +1,27 @@
 import java.io.*;
 import java.util.ArrayList;
 
-public class CSVOperations {
+/**
+ * This class is designed to work with actual csv files
+ * 1. Writes List of strings to "SheffieldSportsClub.csv" file
+ * 2. Reads csv files and returns Arraylist of Strings
+ */
+public class CSVUtil {
 
+    // To support import functionality this function reads all the entries from customerlist.csv file
     public static ArrayList<String> readCSVFile() {
         String file = "customerlist.csv";
         return getMemberCSVStringsList(file);
     }
 
+    // To have all exiting members ready on restart of system,
+    // this function reads all the entries from "SheffieldSportsClub.csv" file
     public static ArrayList<String> loadAllMembersOnStart() {
         String file = "SheffieldSportsClub.csv";
         return getMemberCSVStringsList(file);
     }
 
+    // generic function to read csv file form file name
     private static ArrayList<String> getMemberCSVStringsList(String fileName) {
         ArrayList<String> csvStringsList = new ArrayList<String>();
         try {
@@ -36,14 +45,15 @@ public class CSVOperations {
         return csvStringsList;
     }
 
+    // used to export all existing members in system to SheffieldSportsClub.csv file
     public static void writeCSVFile(ArrayList<String> lines) {
         String fileName = "SheffieldSportsClub.csv";
-        System.out.println(lines.size());
+        System.out.println();
         try (PrintWriter writer = new PrintWriter(fileName)) {
             for (String line : lines) {
                 writer.write(line + "\n");
             }
-            System.out.println("done!");
+            System.out.println("done!" + "exported " + lines.size() + " members");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -3,7 +3,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
 
     private void createVisitorDetailsArea() {
         // Create Visitor count till today's date
-        visitorsTillDate = new JLabel("Date:" + Util.convertDateToString(LocalDate.now()));
+        visitorsTillDate = new JLabel("Date:" + DateUtil.convertDateToString(LocalDate.now()));
         numberOfVisitors = new JLabel("Visitors:" + String.valueOf(visitorCount));
         JLabel gapLine = new JLabel("===============");
         this.add(gapLine);
@@ -104,7 +103,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
         } else if (source == logVisitorButton) {
             visitorCount++;
             JOptionPane.showMessageDialog(null, "Visitor logged successfully\n Total visitors: " + visitorCount);
-            visitorsTillDate.setText("Date:" + Util.convertDateToString(LocalDate.now())); // this will change date if
+            visitorsTillDate.setText("Date:" + DateUtil.convertDateToString(LocalDate.now())); // this will change date if
                                                                                            // date is changed while
                                                                                            // logging the visitor
             numberOfVisitors.setText("Visitors:" + String.valueOf(visitorCount));
