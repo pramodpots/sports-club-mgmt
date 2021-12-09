@@ -49,7 +49,7 @@ public class GUISingleMemberPanel extends JPanel {
                 try {
                     new GUIEditShowMemberForm(member);
                 } catch (Exception err) {
-                    System.out.println(err);
+                    err.printStackTrace();
                 }
             }
         });

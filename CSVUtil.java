@@ -48,7 +48,6 @@ public class CSVUtil {
     // used to export all existing members in system to SheffieldSportsClub.csv file
     public static void writeCSVFile(ArrayList<String> lines) {
         String fileName = "SheffieldSportsClub.csv";
-        System.out.println();
         try (PrintWriter writer = new PrintWriter(fileName)) {
             for (String line : lines) {
                 writer.write(line + "\n");
