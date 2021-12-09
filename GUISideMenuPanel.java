@@ -25,6 +25,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
     private JButton logVisitorButton;
     private JButton showAllMembers;
     private JButton searchButton;
+    private JButton showTotalIncome;
     private JLabel numberOfVisitors;
     private JLabel visitorsTillDate;
     private JTextField searchValue;
@@ -43,6 +44,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
         // create buttons
         showAllMembers = new JButton("Show All Members");
         addMemberButton = new JButton("Add Member");
+        showTotalIncome = new JButton("Show Total Income");
         importMembersButton = new JButton("Import Members");
         exportMembersButton = new JButton("Export Members");
         logVisitorButton = new JButton("Log Visitor");
@@ -50,6 +52,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
         // add buttons to panel
         add(showAllMembers);
         add(addMemberButton);
+        add(showTotalIncome);
         add(importMembersButton);
         add(exportMembersButton);
         add(logVisitorButton);
@@ -57,6 +60,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
         // associate actions to buttons
         showAllMembers.addActionListener(this);
         addMemberButton.addActionListener(this);
+        showTotalIncome.addActionListener(this);
         importMembersButton.addActionListener(this);
         exportMembersButton.addActionListener(this);
         logVisitorButton.addActionListener((this));
@@ -103,6 +107,14 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
             } catch (Exception err) {
                 err.printStackTrace();
             }
+        } else if (source == showTotalIncome) {
+            double visitorIncome = ClubMembership.VISITOR_FEE * visitorCount;
+            double membershipIncome = ClubMembership.getCalculatedTotalMemberShipIncome();
+            double totalIncome = visitorIncome + membershipIncome;
+            JOptionPane.showMessageDialog(null,
+                    "\nMembership Total Income: " + membershipIncome +
+                            "\nVisitor Total Income: " + visitorIncome +
+                    "\nTotal Income: " + totalIncome);
         } else if (source == importMembersButton) {
             ClubMembership.readFromCSV(); // reads customerlist.csv file and loads members into system
             ClubMembership.guiMainFrame.updatePane();
@@ -115,7 +127,7 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
                     "Export was successfully. Please check file 'SheffieldSportsClub.csv' in current folder.");
         } else if (source == logVisitorButton) {
             visitorCount++;
-            JOptionPane.showMessageDialog(null, "Visitor logged successfully\n Total visitors: " + visitorCount);
+            JOptionPane.showMessageDialog(null, "Visitor logged successfully\nTotal visitors: " + visitorCount);
 
             // this will change date if date is changed while logging the visitor
             visitorsTillDate.setText("Date:" + DateUtil.convertDateToString(LocalDate.now()));
