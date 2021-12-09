@@ -112,9 +112,9 @@ public class GUISideMenuPanel extends JPanel implements ActionListener {
             double membershipIncome = ClubMembership.getCalculatedTotalMemberShipIncome();
             double totalIncome = visitorIncome + membershipIncome;
             JOptionPane.showMessageDialog(null,
-                    "\nMembership Total Income: " + membershipIncome +
-                            "\nVisitor Total Income: " + visitorIncome +
-                    "\nTotal Income: " + totalIncome);
+                    "\nMembership Total Income: £" + membershipIncome +
+                            "\nVisitor Total Income: £" + visitorIncome +
+                    "\n\nTotal Income: £" + totalIncome);
         } else if (source == importMembersButton) {
             ClubMembership.readFromCSV(); // reads customerlist.csv file and loads members into system
             ClubMembership.guiMainFrame.updatePane();
